@@ -14,6 +14,7 @@
 <script lang="ts">
 import { reactive, toRefs } from 'vue';
 import { Dongdong } from '@nutui/icons-vue-taro';
+import Taro from '@tarojs/taro';
 
 export default {
   name: 'HomeIndex',
@@ -34,6 +35,9 @@ export default {
       state.msg2 = msg;
       state.type = type;
       state.cover = cover;
+      Taro.navigateTo({
+        url: '/pages/todo/todo-preview',
+      });
     };
 
     return {
