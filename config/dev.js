@@ -7,6 +7,8 @@ module.exports = {
   },
   defineConstants: {
   },
-  mini: {},
+  mini: {
+    hot: true,
+  },
   h5: {}
 }

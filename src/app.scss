@@ -1,0 +1,29 @@
+@import '@compass-aiden/styles';
+
+[data-theme='dark'] {
+  --cp-font-color: #fff;
+  --cp-page-bg-color: #1a1a1a;
+}
+
+page {
+  height: 100%;
+  overflow: hidden;
+  --cp-font-color: rgb(15, 15, 15);
+  --cp-page-bg-color: #f5f5f5;
+  background-color: var(--cp-page-bg-color, #f5f5f5);
+  color: var(--cp-font-color, rgb(15, 15, 15));
+}
+
+view {
+  box-sizing: border-box;
+}
+
+.cp-text-ellipsis {
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  word-break: break-all;
+  -webkit-line-clamp: 1;
+}

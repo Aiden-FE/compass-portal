@@ -17,7 +17,7 @@ import { Dongdong } from '@nutui/icons-vue-taro';
 import Taro from '@tarojs/taro';
 
 export default {
-  name: 'HomeIndex',
+  name: 'Index',
   components: {
     Dongdong,
   },
@@ -36,7 +36,7 @@ export default {
       state.type = type;
       state.cover = cover;
       Taro.navigateTo({
-        url: '/pages/todo/todo-preview',
+        url: '/pages/todo/todo',
       });
     };
 
