@@ -1,8 +1,8 @@
 {
-  "miniprogramRoot": "./dist",
+  "miniprogramRoot": "dist/weapp/",
   "projectname": "compass-taro",
   "description": "taro vue 模板",
-  "appid": "touristappid",
+  "appid": "wxdf94fe5d7928e120",
   "setting": {
     "urlCheck": true,
     "es6": false,

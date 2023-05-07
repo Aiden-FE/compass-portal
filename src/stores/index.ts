@@ -1,2 +1,2 @@
+// eslint-disable-next-line import/prefer-default-export
 export { default as useContextStore } from './context';
-export { default as useTodoStore } from './todo';

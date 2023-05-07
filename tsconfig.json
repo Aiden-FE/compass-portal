@@ -20,7 +20,14 @@
     "resolveJsonModule": true,
     "typeRoots": [
       "node_modules/@types"
-    ]
+    ],
+    "paths": {
+      "@/stores": ["src/stores"],
+      "@/interfaces": ["src/interfaces"],
+      "@/http": ["src/http"],
+      "@/utils": ["src/utils"],
+      "@/config": ["src/config"]
+    }
   },
   "include": ["./src", "./types", "components.d.ts"],
   "compileOnSave": false

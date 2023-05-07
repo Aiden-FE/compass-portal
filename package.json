@@ -5,6 +5,8 @@
   "description": "Compass 跨端门户项目",
   "scripts": {
     "build:weapp": "taro build --type weapp",
+    "build:weapp:preview": "taro build --type weapp --preview",
+    "build:weapp:upload": "taro build --type weapp --upload --projectPath dist/weapp",
     "build:swan": "taro build --type swan",
     "build:alipay": "taro build --type alipay",
     "build:tt": "taro build --type tt",
@@ -25,6 +27,10 @@
     "format": "prettier --write src/",
     "lint": "eslint src --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
+  "taroConfig": {
+    "version": "1.0.0",
+    "desc": "项目初始化"
+  },
   "browserslist": [
     "last 3 versions",
     "Android >= 4.1",
@@ -34,8 +40,9 @@
   "dependencies": {
     "@babel/runtime": "^7.7.7",
     "@compass-aiden/styles": "^1.1.0",
+    "@compass-aiden/utils": "^1.6.0",
     "@nutui/icons-vue-taro": "^0.0.9",
-    "@nutui/nutui-taro": "^4.0.4",
+    "@nutui/nutui-taro": "^4.0.6",
     "@tarojs/components": "3.6.5",
     "@tarojs/helper": "3.6.5",
     "@tarojs/plugin-framework-vue3": "3.6.5",
@@ -50,15 +57,19 @@
     "@tarojs/runtime": "3.6.5",
     "@tarojs/shared": "3.6.5",
     "@tarojs/taro": "3.6.5",
+    "@vueuse/core": "^10.1.2",
+    "lodash-es": "^4.17.21",
     "pinia": "^2.0.34",
     "vue": "^3.2.40"
   },
   "devDependencies": {
     "@babel/core": "^7.8.0",
-    "@compass-aiden/eslint-config": "^1.5.0",
+    "@compass-aiden/eslint-config": "^1.5.2",
     "@rushstack/eslint-patch": "^1.2.0",
     "@tarojs/cli": "3.6.5",
+    "@tarojs/plugin-mini-ci": "^3.6.6",
     "@tarojs/webpack5-runner": "3.6.5",
+    "@types/lodash-es": "^4.17.7",
     "@types/node": "^18.15.11",
     "@types/webpack-env": "^1.13.6",
     "@typescript-eslint/eslint-plugin": "^5.20.0",

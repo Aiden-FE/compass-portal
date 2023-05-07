@@ -148,3 +148,6 @@ deploy_versions/
 .rn_temp/
 .swc
 components.d.ts
+
+# wechat upload key
+private.*.key

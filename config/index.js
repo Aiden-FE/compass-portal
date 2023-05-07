@@ -1,5 +1,17 @@
 import Components from 'unplugin-vue-components/webpack';
 import NutUIResolver from '@nutui/nutui-taro/dist/resolver';
+import path from 'node:path';
+
+/**
+ * @typedef { import("@tarojs/plugin-mini-ci").CIOptions } CIOptions
+ * @type {CIOptions}
+ */
+const CIPluginOpt = {
+  weapp: {
+    appid: '微信小程序appid',
+    privateKeyPath: 'private.wxdf94fe5d7928e120.key',
+  },
+}
 
 const config = {
   projectName: 'compass-taro',
@@ -17,9 +29,16 @@ const config = {
     375: 2 / 1
   },
   sourceRoot: 'src',
-  outputRoot: 'dist',
-  plugins: ['@tarojs/plugin-html'],
+  outputRoot: `dist/${process.env.TARO_ENV}`,
+  plugins: ['@tarojs/plugin-html', ['@tarojs/plugin-mini-ci', CIPluginOpt]],
   defineConstants: {
+  },
+  alias: {
+    '@/stores': path.resolve(__dirname, '..', 'src/stores'),
+    '@/interfaces': path.resolve(__dirname, '..', 'src/interfaces'),
+    '@/http': path.resolve(__dirname, '..', 'src/http'),
+    '@/utils': path.resolve(__dirname, '..', 'src/utils'),
+    '@/config': path.resolve(__dirname, '..', 'src/config'),
   },
   copy: {
     patterns: [

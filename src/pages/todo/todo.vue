@@ -1,43 +1,125 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { showToast } from '@tarojs/taro';
-import { useContextStore, useTodoStore } from '../../stores';
+import { onBeforeUnmount, reactive, ref, shallowRef } from 'vue';
+import { promiseTask } from '@compass-aiden/utils';
+import { useContextStore } from '@/stores';
+import { createTodo, deleteTodo, getTodoList, modifyTodo } from '@/http';
 import CreateTodo from './create-todo.vue';
+import { Todo } from './todo.type';
 
 definePageConfig({
   navigationBarTitleText: '我的待办',
 });
 
-const { isLoggedIn } = useContextStore();
-const { todoList, refreshLoading, refreshTodoList } = useTodoStore();
+const { checkSession } = useContextStore();
+const list = shallowRef<Todo[]>([]);
+const editTodo = shallowRef<Todo | null>(null); // 正在编辑的todo
+const loading = ref(false);
 const createTodoPanel = ref(false);
+const query = reactive({
+  keyword: '',
+  pageNum: 0,
+  pageSize: 20,
+  total: undefined as number | undefined,
+});
 
-function createNewTodo() {
-  if (!isLoggedIn) {
-    showToast({
-      icon: 'none',
-      title: '当前正以离线方式使用,数据无法跨端同步',
-      duration: 3000,
-    });
+async function queryTodoList(isRefresh = false) {
+  if (loading.value) {
+    return;
   }
+  if (isRefresh) {
+    query.pageNum = 0;
+    query.total = undefined;
+  }
+  if (query.total !== undefined && list.value.length >= query.total) {
+    return;
+  }
+  try {
+    loading.value = true;
+    const [err, result] = await promiseTask(
+      getTodoList({
+        keyword: query.keyword,
+        pageNum: isRefresh ? query.pageNum : query.pageNum + 1,
+        pageSize: query.pageSize,
+      }),
+    );
+    loading.value = false;
+    if (err) {
+      return;
+    }
+    query.pageNum = result.pageNum;
+    query.pageSize = result.pageSize;
+    query.total = result.total;
+    list.value = isRefresh ? result.list : list.value.concat(result.list);
+  } catch (e) {
+    console.log('debug: ', e);
+  }
+}
+
+async function addTodo(todo: Partial<Todo>) {
+  if (!todo.title) return;
+  if (todo.id) {
+    await modifyTodo(todo as Todo);
+  } else {
+    await createTodo(todo as Todo);
+  }
+  queryTodoList(true);
+}
+
+async function removeTodo(id: Todo['id']) {
+  await deleteTodo(id);
+  queryTodoList(true);
+}
+
+function displayTodo(todo: Todo) {
+  editTodo.value = todo;
   createTodoPanel.value = true;
 }
+
+onBeforeUnmount(() => {
+  list.value = [];
+});
+
+async function createNewTodo() {
+  createTodoPanel.value = true;
+}
+
+function toggleTodoPanel(visi: boolean) {
+  if (!visi) {
+    editTodo.value = null;
+  }
+  createTodoPanel.value = visi;
+}
+
+function modifyTodoStatus(todo: Todo, state: boolean) {
+  modifyTodo({
+    ...todo,
+    isFinished: state,
+  });
+}
+
+(async function created() {
+  await checkSession();
+  queryTodoList(true);
+})();
 </script>
 
 <template>
-  <nut-pull-refresh class="cp-portal-todo" v-model="refreshLoading" @refresh="refreshTodoList">
-    <nut-list :list-data="todoList">
+  <div class="gradient-bg cp-portal-todo">
+    <nut-list v-if="list.length" :list-data="list" @scroll-bottom="queryTodoList">
       <template #default="{ item }">
         <nut-swipe>
-          <nut-cell :class="{ 'cp-portal-todo__item_finished': item.isFinished }" class="cp-portal-todo__item">
-            <nut-checkbox v-model="item.isFinished"></nut-checkbox>
-            <div>
+          <nut-cell
+            :class="{ 'cp-portal-todo__item_finished': item.isFinished }"
+            class="cp-portal-todo__item"
+          >
+            <nut-checkbox v-model="item.isFinished" @change="(state) => modifyTodoStatus(item, state)"></nut-checkbox>
+            <div class="cp-portal-todo__item-content" @click="displayTodo(item)">
               <div class="cp-portal-todo__item-title cp-text-ellipsis">{{ item.title }}</div>
               <div class="cp-portal-todo__item-desc cp-text-ellipsis">{{ item.description }}</div>
             </div>
           </nut-cell>
           <template #right>
-            <nut-button shape="square" style="height: 100%" type="danger">删除</nut-button>
+            <nut-button @click="removeTodo(item.id)" shape="square" style="height: 100%" type="danger">删除</nut-button>
           </template>
         </nut-swipe>
       </template>
@@ -49,24 +131,39 @@ function createNewTodo() {
         新增待办
       </nut-button>
     </div>
-  </nut-pull-refresh>
+  </div>
   <!-- 创建todo -->
-  <CreateTodo v-model:visible="createTodoPanel" />
+  <CreateTodo :visible="createTodoPanel" @update:visible="toggleTodoPanel" @submit="addTodo" :todo="editTodo" />
 </template>
 
 <style lang="scss">
 @import '@compass-aiden/styles/dist/static/bem.scss';
 
 @include b(portal-todo) {
-  background: url('https://aidenoss.cpolar.cn/compass-open/wallpaper/riccardo-cervia-ICSRhjP1UBU-unsplash%20%281%29.jpg');
   padding: 8px 16px;
+  height: 100%;
+  @include e(item-content) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
   @include e(sticky) {
     position: fixed;
     bottom: 64px;
     width: calc(100% - 32px);
+    button {
+      background: #35333c;
+      color: #fff;
+      border: 0;
+      border-radius: 12px;
+    }
   }
   @include e(item) {
     margin: 8px 0;
+    height: 120px;
+    align-items: center;
     @include m(finished) {
       .cp-portal-todo__item-title,
       .cp-portal-todo__item-desc {
@@ -76,6 +173,7 @@ function createNewTodo() {
     }
   }
   @include e(item-title) {
+    color: var(--cp-font-color, rgb(15, 15, 15));
   }
   @include e(item-desc) {
     font-size: 22px;
