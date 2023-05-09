@@ -28,8 +28,8 @@
     "lint": "eslint src --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "taroConfig": {
-    "version": "1.0.0",
-    "desc": "项目初始化"
+    "version": "1.1.0",
+    "desc": "支持小程序分享,增加入口首页路由"
   },
   "browserslist": [
     "last 3 versions",

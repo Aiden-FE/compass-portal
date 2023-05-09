@@ -110,7 +110,7 @@ function editTodo() {
             <Edit />
           </template>
         </nut-button>
-        <nut-button v-if="mode === 'edit'" @click="submit">
+        <nut-button v-if="mode === 'edit'" @click="submit" type="primary">
           <template #icon>
             <Checklist />
           </template>

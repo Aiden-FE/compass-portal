@@ -8,8 +8,10 @@
 page {
   height: 100%;
   overflow: hidden;
+  --app-primary-color: #0f95b0;
   --cp-font-color: rgb(15, 15, 15);
   --cp-page-bg-color: #f5f5f5;
+  --nut-primary-color: var(--app-primary-color);
   background-color: var(--cp-page-bg-color, #f5f5f5);
   color: var(--cp-font-color, rgb(15, 15, 15));
   --nut-cell-desc-color: var(--cp-font-color, rgb(15, 15, 15));

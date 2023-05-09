@@ -8,6 +8,7 @@ import { Todo } from './todo.type';
 
 definePageConfig({
   navigationBarTitleText: '我的待办',
+  enableShareAppMessage: true,
 });
 
 const { checkSession } = useContextStore();
@@ -154,7 +155,7 @@ function modifyTodoStatus(todo: Todo, state: boolean) {
     bottom: 64px;
     width: calc(100% - 32px);
     button {
-      background: #35333c;
+      background: var(--app-primary-color);
       color: #fff;
       border: 0;
       border-radius: 12px;
