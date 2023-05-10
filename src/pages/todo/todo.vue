@@ -5,6 +5,7 @@ import { useContextStore } from '@/stores';
 import { createTodo, deleteTodo, getTodoList, modifyTodo } from '@/http';
 import CreateTodo from './create-todo.vue';
 import { Todo } from './todo.type';
+import Taro from "@tarojs/taro";
 
 definePageConfig({
   navigationBarTitleText: '我的待办',
@@ -36,6 +37,9 @@ async function queryTodoList(isRefresh = false) {
   }
   try {
     loading.value = true;
+    Taro.showLoading({
+      title: '正在获取列表',
+    });
     const [err, result] = await promiseTask(
       getTodoList({
         keyword: query.keyword,
@@ -53,6 +57,8 @@ async function queryTodoList(isRefresh = false) {
     list.value = isRefresh ? result.list : list.value.concat(result.list);
   } catch (e) {
     console.log('debug: ', e);
+  } finally {
+    Taro.hideLoading();
   }
 }
 
@@ -109,10 +115,7 @@ function modifyTodoStatus(todo: Todo, state: boolean) {
     <nut-list v-if="list.length" :list-data="list" @scroll-bottom="queryTodoList">
       <template #default="{ item }">
         <nut-swipe>
-          <nut-cell
-            :class="{ 'cp-portal-todo__item_finished': item.isFinished }"
-            class="cp-portal-todo__item"
-          >
+          <nut-cell :class="{ 'cp-portal-todo__item_finished': item.isFinished }" class="cp-portal-todo__item">
             <nut-checkbox v-model="item.isFinished" @change="(state) => modifyTodoStatus(item, state)"></nut-checkbox>
             <div class="cp-portal-todo__item-content" @click="displayTodo(item)">
               <div class="cp-portal-todo__item-title cp-text-ellipsis">{{ item.title }}</div>
