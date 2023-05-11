@@ -22,6 +22,7 @@ function toggleRoute(path: string, pageType = 'tab') {
         @click="toggleRoute('/pages/assistant/assistant')"
         class="cp-portal-home__tools-item"
         title="AI助手"
+        is-link
       ></nut-cell>
       <nut-cell
         @click="toggleRoute('/pages/todo/todo')"

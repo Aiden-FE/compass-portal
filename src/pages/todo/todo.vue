@@ -3,9 +3,9 @@ import { onBeforeUnmount, reactive, ref, shallowRef } from 'vue';
 import { promiseTask } from '@compass-aiden/utils';
 import { useContextStore } from '@/stores';
 import { createTodo, deleteTodo, getTodoList, modifyTodo } from '@/http';
+import Taro from '@tarojs/taro';
 import CreateTodo from './create-todo.vue';
 import { Todo } from './todo.type';
-import Taro from "@tarojs/taro";
 
 definePageConfig({
   navigationBarTitleText: '我的待办',

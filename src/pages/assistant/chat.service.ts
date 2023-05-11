@@ -32,18 +32,11 @@ export default function useChatService() {
       }),
     );
     Taro.hideLoading();
-    if (err) {
+    if (err || !result.role) {
       Taro.showToast({
         icon: 'none',
-        title: err.message || err,
-        duration: 5000,
-      });
-    }
-    if (!result.role) {
-      Taro.showToast({
-        icon: 'none',
-        title: 'X 沟通失败,可能由于您的会话余额不足或其他异常导致',
-        duration: 5000,
+        title: err?.message || err || 'X 沟通失败,可能由于您的会话余额不足或其他异常导致',
+        duration: 3500,
       });
       messageHistories.value.pop();
     } else {
