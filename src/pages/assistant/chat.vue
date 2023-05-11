@@ -44,7 +44,10 @@ async function submit() {
         }"
       >
         <nut-avatar v-if="['assistant', 'preset_assistant'].includes(item.role)" size="normal">
-          <img src="https://img12.360buyimg.com/imagetools/jfs/t1/196430/38/8105/14329/60c806a4Ed506298a/e6de9fb7b8490f38.png" />
+          <img
+            alt="头像"
+            src="https://img12.360buyimg.com/imagetools/jfs/t1/196430/38/8105/14329/60c806a4Ed506298a/e6de9fb7b8490f38.png"
+          />
         </nut-avatar>
         <div class="cp-portal-ai-chat__msg" v-html="item.content"></div>
         <nut-avatar v-if="item.role === 'user'" size="normal"><My /></nut-avatar>

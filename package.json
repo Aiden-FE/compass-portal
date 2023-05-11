@@ -28,8 +28,8 @@
     "lint": "eslint src --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "taroConfig": {
-    "version": "1.2.0",
-    "desc": "支持与AI对话;获取todo时展示loading"
+    "version": "1.2.1",
+    "desc": "修复额度不足时loading不结束的问题"
   },
   "browserslist": [
     "last 3 versions",
@@ -40,7 +40,7 @@
   "dependencies": {
     "@babel/runtime": "^7.7.7",
     "@compass-aiden/styles": "^1.1.0",
-    "@compass-aiden/utils": "^1.6.0",
+    "@compass-aiden/utils": "^1.6.2",
     "@nutui/icons-vue-taro": "^0.0.9",
     "@nutui/nutui-taro": "^4.0.6",
     "@tarojs/components": "3.6.5",

@@ -55,8 +55,6 @@ async function queryTodoList(isRefresh = false) {
     query.pageSize = result.pageSize;
     query.total = result.total;
     list.value = isRefresh ? result.list : list.value.concat(result.list);
-  } catch (e) {
-    console.log('debug: ', e);
   } finally {
     Taro.hideLoading();
   }
@@ -117,7 +115,7 @@ function modifyTodoStatus(todo: Todo, state: boolean) {
         <nut-swipe>
           <nut-cell :class="{ 'cp-portal-todo__item_finished': item.isFinished }" class="cp-portal-todo__item">
             <nut-checkbox v-model="item.isFinished" @change="(state) => modifyTodoStatus(item, state)"></nut-checkbox>
-            <div class="cp-portal-todo__item-content" @click="displayTodo(item)">
+            <div class="cp-portal-todo__item-content" @click="displayTodo(item)" @keydown="displayTodo(item)">
               <div class="cp-portal-todo__item-title cp-text-ellipsis">{{ item.title }}</div>
               <div class="cp-portal-todo__item-desc cp-text-ellipsis">{{ item.description }}</div>
             </div>

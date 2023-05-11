@@ -9,5 +9,6 @@ module.exports = {
   },
   rules: {
     'vue/multi-word-component-names': 'off',
+    'import/no-cycle': 'off',
   },
 };

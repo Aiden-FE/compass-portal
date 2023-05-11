@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import { promiseTask } from '@compass-aiden/utils';
 import { ChatMessage, ChatChoice } from '@/interfaces';
 import { createChat } from '@/http';
 import Taro from '@tarojs/taro';
@@ -18,17 +19,26 @@ export default function useChatService() {
     Taro.showLoading({
       title: 'AI正在思考',
     });
-    const result = await createChat({
-      model: 'gpt-3.5-turbo',
-      choices: messageHistories.value
-        .filter((msg) => ['user', 'assistant', 'system'].includes(msg.role))
-        .map((msg) => ({
-          role: msg.role as ChatChoice['role'],
-          content: msg.content,
-          name: msg.name,
-        })),
-    });
+    const [err, result] = await promiseTask(
+      createChat({
+        model: 'gpt-3.5-turbo',
+        choices: messageHistories.value
+          .filter((msg) => ['user', 'assistant', 'system'].includes(msg.role))
+          .map((msg) => ({
+            role: msg.role as ChatChoice['role'],
+            content: msg.content,
+            name: msg.name,
+          })),
+      }),
+    );
     Taro.hideLoading();
+    if (err) {
+      Taro.showToast({
+        icon: 'none',
+        title: err.message || err,
+        duration: 5000,
+      });
+    }
     if (!result.role) {
       Taro.showToast({
         icon: 'none',
