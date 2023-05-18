@@ -12,4 +12,7 @@ export interface ChatData {
 export interface ChatMessage extends Omit<ChatChoice, 'role'> {
   role: 'user' | 'assistant' | 'system' | 'preset_assistant';
   avatarURL?: string;
+  hidden?: boolean;
 }
+
+export type ChatType = 'ai' | 'translation-zh' | 'translation-en' | 'writing';

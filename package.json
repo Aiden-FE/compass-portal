@@ -28,8 +28,8 @@
     "lint": "eslint src --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "taroConfig": {
-    "version": "1.2.2",
-    "desc": "修复对话失败未移除消息的问题"
+    "version": "1.3.0",
+    "desc": "增加两位翻译AI"
   },
   "browserslist": [
     "last 3 versions",
